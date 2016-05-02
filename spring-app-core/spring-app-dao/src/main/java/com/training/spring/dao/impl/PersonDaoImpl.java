@@ -1,0 +1,98 @@
+package com.training.spring.dao.impl;
+
+import com.training.spring.model.Person;
+import com.training.spring.model.Address;
+import com.training.spring.model.Contact;
+import com.training.spring.model.Role;
+import com.training.spring.dao.PersonDao;
+import org.hibernate.Criteria;
+import org.hibernate.criterion.Restrictions;
+import org.hibernate.SessionFactory;
+import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.stereotype.Repository;
+
+@Transactional
+@Repository
+public class PersonDaoImpl implements PersonDao{
+
+	@Autowired
+	private SessionFactory sessionFactory;
+
+    @SuppressWarnings("unchecked")
+	@Override
+	@Transactional(readOnly=true)
+	public List<Person> getAllPersons(){
+		List<Person> persons = (List<Person>) sessionFactory.getCurrentSession()
+			.createCriteria(Person.class)
+			.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY)
+			.list();
+		return persons;
+	}
+
+	@Override
+	public Person getPersonById(int id) {
+		Person person = (Person) sessionFactory.getCurrentSession()
+			.createCriteria(Person.class)
+			.add(Restrictions.eq("id",id))
+			.uniqueResult();
+		return person;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Person> searchPerson(String lastName, String firstName, String middleName, String role) {
+		Criteria criteria = sessionFactory.getCurrentSession()
+			.createCriteria(Person.class).setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		if (!lastName.isEmpty()){
+			criteria.add(Restrictions.eq("lastName",lastName));	
+		}
+		if(!firstName.isEmpty()){
+			criteria.add(Restrictions.eq("firstName",firstName));	
+		}
+		if(!middleName.isEmpty()){
+			criteria.add(Restrictions.eq("middleName",middleName));	
+		}
+		if (!role.isEmpty()){
+			criteria.createAlias("roles","role");
+			criteria.add(Restrictions.eq("role.role",role));
+		}
+		List<Person> persons = (List<Person>) criteria.list();
+		return persons;
+	}
+
+	@Override
+	public Person savePerson(Person person) {
+		sessionFactory.getCurrentSession().save(person);
+		return person;
+	}
+
+	@Override
+	public Person updatePerson(Person person) {
+		sessionFactory.getCurrentSession().update(person);
+		return person;
+	}
+
+	@Override
+	public Person deletePerson(int id){
+		Person person = (Person) sessionFactory.getCurrentSession().get(Person.class, id);
+		sessionFactory.getCurrentSession().delete(person);
+		return person;
+	}
+
+	@Override
+	public Role getRoleByName(String name){
+		Role role = (Role) sessionFactory.getCurrentSession().createCriteria(Role.class)
+			.add(Restrictions.eq("role",name)).uniqueResult();
+		return role;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Role> getRoles(){
+		List<Role> roles = (List<Role>) sessionFactory.getCurrentSession().createCriteria(Role.class)
+			.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY).list();
+		return roles;
+	}
+}
