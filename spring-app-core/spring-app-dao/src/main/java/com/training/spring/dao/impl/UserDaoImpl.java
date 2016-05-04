@@ -31,4 +31,14 @@ public class UserDaoImpl implements UserDao {
 		sessionFactory.getCurrentSession().save(user);
 	}
 
+	@Override
+	public User getUsernameAndPassword(String username, String password){
+		User user = (User) sessionFactory.getCurrentSession()
+			.createCriteria(User.class)
+			.add(Restrictions.eq("username",username))
+			.add(Restrictions.eq("password",password))
+			.uniqueResult();
+		return user;	
+	}
+
 }

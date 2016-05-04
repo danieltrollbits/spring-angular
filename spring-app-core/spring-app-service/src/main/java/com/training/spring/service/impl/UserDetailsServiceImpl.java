@@ -5,9 +5,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -16,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.training.spring.dao.UserDao;
 import com.training.spring.model.UserRole;
+import com.training.spring.model.User;
 
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
@@ -26,19 +24,13 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 	@Transactional(readOnly = true)
 	@Override
 	public UserDetails loadUserByUsername(final String username) throws UsernameNotFoundException {
-		com.training.spring.model.User user = userDao.findByUserName(username);
-		List<GrantedAuthority> authorities = buildUserAuthority(user.getUserRole());
-		return new User(user.getUsername(), user.getPassword(),
-			user.isEnabled(), true, true, true, authorities);
-	}
-
-	private List<GrantedAuthority> buildUserAuthority(Set<UserRole> userRoles) {
-		Set<GrantedAuthority> setAuths = new HashSet<GrantedAuthority>();
-		for (UserRole userRole : userRoles) {
-			setAuths.add(new SimpleGrantedAuthority(userRole.getRole().toString()));
+		User user = userDao.findByUserName(username);
+		if(user == null){
+			throw new UsernameNotFoundException("Username not found");
 		}
-		List<GrantedAuthority> Result = new ArrayList<GrantedAuthority>(setAuths);
-		return Result;
+		else{
+			return user;
+		}
 	}
 
 }

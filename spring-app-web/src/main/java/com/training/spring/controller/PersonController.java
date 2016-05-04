@@ -45,7 +45,7 @@ public class PersonController {
 	@Autowired
 	private PersonAuditService personAuditService;
 
-	@Autowired 
+	@Autowired
 	private UserService userService;
 
 	@InitBinder
@@ -57,6 +57,17 @@ public class PersonController {
     @RequestMapping(value = "/login", method = {RequestMethod.GET,RequestMethod.POST})
     public String login(){
     	return "login";
+    }
+
+    @RequestMapping(value = "/login_as_admin", method = {RequestMethod.GET,RequestMethod.POST})
+    public String login(@RequestParam String username, @RequestParam String password){
+    	UserDto userDto = userService.getUsernameAndPassword(username, password);
+    	if(userDto.getUserRoleDto().contains("ADMIN")){
+    		return "redirect:/login?admin";
+    	}
+    	else{
+    		return "login";
+    	}
     }
 
     @RequestMapping(value = "/logout", method = RequestMethod.GET)

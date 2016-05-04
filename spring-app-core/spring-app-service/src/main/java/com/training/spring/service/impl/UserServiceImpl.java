@@ -14,6 +14,9 @@ import com.training.spring.dao.UserDao;
 import com.training.spring.model.UserRole;
 import com.training.spring.dto.UserDto;
 import com.training.spring.model.User;
+import com.training.spring.model.UserRole;
+import com.training.spring.dto.UserRoleDto;
+import com.training.spring.model.RoleUser;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -34,6 +37,22 @@ public class UserServiceImpl implements UserService {
 			userDao.save(new User(userDto.getUsername(),passwordEncoder.encode(userDto.getPassword()),userDto.getName()));
 			return userDto;	
 		}
+	}
+
+	@Transactional(readOnly = true)
+	@Override
+	public UserDto getUsernameAndPassword(String username, String password){
+		User user = userDao.getUsernameAndPassword(username, password);
+		UserDto userDto = new UserDto();
+		userDto.setId(user.getId());
+		userDto.setUsername(user.getUsername());
+		userDto.setPassword(user.getPassword());
+		Set<UserRoleDto> userRoleDto = new HashSet<>();
+		for (UserRole userRole : user.getUserRole()){
+			userRoleDto.add(new UserRoleDto(userRole.getRole()));
+		}
+		userDto.setUserRoleDto(userRoleDto);
+		return userDto;
 	}
 
 }

@@ -7,4 +7,6 @@ public interface UserDao {
 	User findByUserName(String username);
 
 	void save(User user);
+
+	User getUsernameAndPassword(String username, String password);
 }

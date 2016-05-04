@@ -13,11 +13,11 @@
             <div class="account-wall">
                 <form name="loginForm" action="/j_spring_security_login" method="POST" class="form-signin">
                 <c:if test="${param.error != null}">
-					<div class="alert alert-danger text-center">Username/Password is incorrect</div>
+					<div class="alert alert-danger text-center">${SPRING_SECURITY_LAST_EXCEPTION.message}</div>
 				</c:if>
 				<c:if test="${param.logout != null}">
 					<div class="alert alert-success text-center">Sucesfully Logged out</div>
-				</c:if><c:out value="${SPRING_SECURITY_LAST_EXCEPTION.message}" />----${SPRING_SECURITY_LAST_EXCEPTION.message}
+				</c:if>
                 <input type="text" class="form-control" name="username" value="" placeholder="Username" required autofocus>
                 <input type="password" class="form-control" name="password" placeholder="Password" required>
                 <button class="btn btn-lg btn-primary btn-block" type="submit">
