@@ -44,6 +44,12 @@ public class UserServiceImpl implements UserService {
 		return toDtos(users);
 	}
 
+	@Transactional
+	@Override
+	public void acceptAccount(int userId){
+		userDao.acceptAccount(userId);
+	}
+
 	public List<UserDto> toDtos(List<User> users){
 		List<UserDto> userDtos = new ArrayList<>(); 
 		for (User user : users){
@@ -57,7 +63,9 @@ public class UserServiceImpl implements UserService {
 		userDto.setId(user.getId());
 		userDto.setUsername(user.getUsername());
 		userDto.setPassword(user.getPassword());
+		userDto.setName(user.getName());
 		userDto.setUserRoleDto(user.getUserRole());
+		userDto.setDateCreated(user.getDateCreated());
 		return userDto;
 	}
 

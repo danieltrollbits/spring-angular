@@ -7,4 +7,6 @@ public interface UserService {
 	UserDto save(UserDto userDto);
 
 	List<UserDto> getPendingUsers();
+
+	void acceptAccount(int userId);
 }

@@ -22,7 +22,6 @@
                 <input type="password" class="form-control" name="password" placeholder="Password" required>
                 <button class="btn btn-lg btn-primary btn-block" type="submit" id="btnUser">
                     Sign in</button>
-                <!-- <button type="submit" class="btn btn-link pull-right" id="btnAdmin">Sign in as administrator</button>  -->  
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
                 </form>
             </div>
@@ -30,16 +29,6 @@
     </div><br>
     <jsp:include page="create_account.jsp"/>
 </div>
-
-<!-- <script src="<c:url value="/resources/js/jquery-2.2.3.min.js"/>"></script> 
-    <script>
-        $("#btnUser").on("click",function(){
-           $("#loginForm").attr("action", "/j_spring_security_login");
-        });
-        $("#btnAdmin").on("click",function(){
-           $("#loginForm").attr("action", "/login_as_admin");
-        });
-    </script>-->
 
 </body>
 </html>

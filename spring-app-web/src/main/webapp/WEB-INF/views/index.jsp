@@ -17,7 +17,7 @@
 			<div class="row">
 				<div class="col-md-12 text-right">
 					<c:if test="${sessionScope.authorities.get(0).toString().equals('ADMIN')}">
-						<a href="#">Pending account <span class="badge">42</span></a>
+						<a href="/pending_account">Pending account <span class="badge">${pendingAccount}</span></a>
 					</c:if>
 					<a href="<c:url value='/logout' />" class="btn btn-link">Logout</a>
 				</div>
@@ -28,6 +28,7 @@
 					<fieldset style="padding:1%" class="default-border">
 						<legend class="default-border">Search Filter</legend>
 						<form action="search" method="get">
+							<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 							<div class="row">
 							    <div class="col-md-6">
 							        <div class="row">

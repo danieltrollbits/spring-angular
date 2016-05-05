@@ -12,7 +12,14 @@
 			<div style="padding:1%">
 				<fieldset style="padding:1%" class="default-border">
 					<legend class="default-border">Pending Account/s</legend>
-					<form action="/accept" method="POST">
+					<c:if test="${param.accepted != null}">
+						<div class="alert alert-success" role="alert"><h4>Account accepted</h4></div>
+					</c:if>
+					<c:if test="${param.error != null}">
+						<div class="alert alert-warning" role="alert"><h4>Please select one account</h4></div>
+					</c:if>
+					<form action="/accept_account" method="POST">
+						<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 						<table class="table table-striped table-bordered table-hover">
 							<thead>
 							<tr>
@@ -26,11 +33,11 @@
 							<tbody>
 								<c:forEach var="user" items="${pendingAccount}">
 									<tr>
-										<td><input type="checkbox" name="userId" value="${user.id}"></td>
+										<td align="center"><input type="checkbox" name="userId" value="${user.id}"></td>
 										<td>${user.id}</td>
 										<td>${user.username}</td>
 										<td>${user.name}</td>
-										<td>${person.dateCreated}</td>
+										<td>${user.dateCreated}</td>
 									</tr>
 								</c:forEach>
 								<c:if test="${pendingAccount.isEmpty()}">
@@ -38,6 +45,7 @@
 								</c:if>
 							</tbody>
 						</table>
+						<button type="submit" value="accept" class="btn btn-default pull-right">Accept</button>
 					</form>
 				</fieldset>	
 			</div>

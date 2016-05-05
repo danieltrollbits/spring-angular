@@ -40,4 +40,12 @@ public class UserDaoImpl implements UserDao {
 		return users;
 	}
 
+	@Override
+	public void acceptAccount(int id){
+		User user = (User) sessionFactory.getCurrentSession().get(User.class, id);
+		user.setEnabled(true);
+		user.setUserStatus(UserStatus.ACTIVE);
+		sessionFactory.getCurrentSession().update(user);
+	}
+
 }

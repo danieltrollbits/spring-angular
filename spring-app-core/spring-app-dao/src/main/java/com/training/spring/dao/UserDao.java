@@ -10,4 +10,6 @@ public interface UserDao {
 	void save(User user);
 
 	List<User> getPendingUsers();
+
+	void acceptAccount(int id);
 }

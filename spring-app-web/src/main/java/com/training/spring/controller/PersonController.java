@@ -59,11 +59,6 @@ public class PersonController {
     	return "login";
     }
 
-    @RequestMapping(value = "/login_as_admin", method = {RequestMethod.GET,RequestMethod.POST})
-    public String loginAsAdmin(){
-    	return "redirect:/login?error";
-    }
-
     @RequestMapping(value = "/logout", method = RequestMethod.GET)
 	public String logout(HttpServletRequest request, HttpServletResponse response) {
 	    Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -89,7 +84,18 @@ public class PersonController {
 		ModelAndView model = new ModelAndView("pending_account");
 		model.addObject("pendingAccount",userService.getPendingUsers());
 		return model;
-	}	
+	}
+
+	@RequestMapping(value = "/accept_account", method = RequestMethod.POST)
+	public String acceptAccount(@RequestParam(value="userId",required=false) int[] userId){
+		if(userId != null && userId.length > 0){
+			for (int id : userId){
+				userService.acceptAccount(id);	
+			}
+			return "redirect:/pending_account?accepted";
+		}
+		return "redirect:/pending_account?error";
+	}
 
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public ModelAndView list(){

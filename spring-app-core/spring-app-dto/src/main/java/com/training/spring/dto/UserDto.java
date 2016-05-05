@@ -79,7 +79,7 @@ public class UserDto extends BaseDto {
 		return this.dateCreated;
 	}
 
-	public void setName(Date dateCreated){
+	public void setDateCreated(Date dateCreated){
 		this.dateCreated = dateCreated;
 	}
 

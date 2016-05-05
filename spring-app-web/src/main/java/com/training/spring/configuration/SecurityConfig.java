@@ -24,12 +24,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
 	}
 
+	@Autowired
+	CustomAuthenticationSuccessHandler successHandler;
+
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 
 	    http.authorizeRequests()
-        .antMatchers("/resources/**","/create_account").permitAll()
-        .antMatchers("/login_as_admin").hasRole("ADMIN")
+        .antMatchers("/resources/**","/create_account","/denied").permitAll()
+        .antMatchers("/delete","/audit").hasRole("ADMIN")
         .anyRequest().authenticated()
         .and()
         	.formLogin()
@@ -37,7 +40,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         	.loginProcessingUrl("/j_spring_security_login")
         	.usernameParameter("username")
         	.passwordParameter("password")
-        	.successHandler(new CustomAuthenticationSuccessHandler())
+        	.successHandler(successHandler)
         	.permitAll()
         .and()
         	.logout()
