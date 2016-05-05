@@ -24,7 +24,7 @@ import org.springframework.context.annotation.Import;
 @EnableAspectJAutoProxy
 @Configuration
 @EnableTransactionManagement
-@ComponentScan({"com.training.spring.dao","com.training.spring.service"})
+@ComponentScan({"com.training.spring.dao","com.training.spring.service","com.training.spring.configuration"})
 public class ApplicationContextConfig {
 
 	@Bean
@@ -32,7 +32,7 @@ public class ApplicationContextConfig {
          return new AuditPersonAspect();
      }
 
-     /*@Bean
+     @Bean
      public SimpleMappingExceptionResolver getSimpleMappingExceptionResolver(){
      	SimpleMappingExceptionResolver simple = new SimpleMappingExceptionResolver();
      	Properties mappings = new Properties();
@@ -40,7 +40,7 @@ public class ApplicationContextConfig {
      	simple.setExceptionMappings(mappings);
      	simple.setDefaultErrorView("error");
      	return simple;
-     } */
+     }
 
 	@Bean(name = "dataSource")
 	public BasicDataSource getDataSource() {

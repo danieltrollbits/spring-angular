@@ -29,12 +29,24 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 	    http.authorizeRequests()
         .antMatchers("/resources/**","/create_account").permitAll()
+        .antMatchers("/login_as_admin").hasRole("ADMIN")
         .anyRequest().authenticated()
-        .and().formLogin().loginPage("/login").loginProcessingUrl("/j_spring_security_login")
-        .usernameParameter("username").passwordParameter("password").permitAll()
-        .and().logout().permitAll()
-        .and().csrf()
-        .and().exceptionHandling().accessDeniedPage("/denied");
+        .and()
+        	.formLogin()
+        	.loginPage("/login")
+        	.loginProcessingUrl("/j_spring_security_login")
+        	.usernameParameter("username")
+        	.passwordParameter("password")
+        	.successHandler(new CustomAuthenticationSuccessHandler())
+        	.permitAll()
+        .and()
+        	.logout()
+        	.permitAll()
+        .and()
+        	.csrf()
+        .and()
+        	.exceptionHandling()
+        	.accessDeniedPage("/denied");
 	}
 	
 	@Bean

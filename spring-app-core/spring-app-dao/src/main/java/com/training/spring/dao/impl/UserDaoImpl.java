@@ -1,6 +1,5 @@
 package com.training.spring.dao.impl;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.SessionFactory;
@@ -10,6 +9,7 @@ import org.hibernate.criterion.Restrictions;
 
 import com.training.spring.dao.UserDao;
 import com.training.spring.model.User;
+import com.training.spring.model.UserStatus;
 
 @Repository
 public class UserDaoImpl implements UserDao {
@@ -32,13 +32,12 @@ public class UserDaoImpl implements UserDao {
 	}
 
 	@Override
-	public User getUsernameAndPassword(String username, String password){
-		User user = (User) sessionFactory.getCurrentSession()
+	public List<User> getPendingUsers(){
+		List<User> users = (List<User>) sessionFactory.getCurrentSession()
 			.createCriteria(User.class)
-			.add(Restrictions.eq("username",username))
-			.add(Restrictions.eq("password",password))
-			.uniqueResult();
-		return user;	
+			.add(Restrictions.eq("userStatus",UserStatus.PENDING))
+			.list();
+		return users;
 	}
 
 }

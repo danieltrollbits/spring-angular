@@ -4,48 +4,56 @@
 <html>
 	<head>
 		<title>index</title>
-		<link rel="stylesheet" type="text/css" href="<c:url value="/resources/css/grid.css"/>">
+		<link rel="stylesheet" type="text/css" href="<c:url value="/resources/css/bootstrap/bootstrap.min.css"/>">
+		<link rel="stylesheet" type="text/css" href="<c:url value="/resources/css/main.css"/>">
 	</head>
 	<body style="padding:2% 10% 10% 10%">
-		<div>
+		<div class="container">
 			<div class="row">
-				<div class="column column-6">
+				<div class="col-md-6">
 					<span style="color:blue">${param.message}</span>
 				</div>
 			</div>
-			<a href="<c:url value='/logout' />">Logout</a>
-			<fieldset>
-				<legend>Persons</legend>
+			<div class="row">
+				<div class="col-md-12 text-right">
+					<c:if test="${sessionScope.authorities.get(0).toString().equals('ADMIN')}">
+						<a href="#">Pending account <span class="badge">42</span></a>
+					</c:if>
+					<a href="<c:url value='/logout' />" class="btn btn-link">Logout</a>
+				</div>
+			</div>
+			<fieldset class="default-border">
+				<legend class="default-border">Persons</legend>
 				<div style="padding:1%">
-					<fieldset style="padding:1%">
-						<legend>Search Filter</legend>
+					<fieldset style="padding:1%" class="default-border">
+						<legend class="default-border">Search Filter</legend>
 						<form action="search" method="get">
 							<div class="row">
-							    <div class="column column-6">
+							    <div class="col-md-6">
 							        <div class="row">
-							            <div class="column column-4">First Name</div>
-							            <div class="column column-8">
-							            	<input type="text" name="firstName" value="${param.firstName}">
+							            <div class="col-md-4">First Name</div>
+							            <div class="col-md-8">
+							            	<input type="text" name="firstName" value="${param.firstName}" class="form-control">
 							            </div>
-							        </div>
+							        </div><br>
 							        <div class="row">
-							            <div class="column column-4">Middle Name</div>
-							            <div class="column column-8">
-							            	<input type="text" name="middleName" value="${param.middleName}">
+							            <div class="col-md-4">Middle Name</div>
+							            <div class="col-md-8">
+							            	<input type="text" name="middleName" value="${param.middleName}" class="form-control">
 							            </div>
 							        </div>
 							    </div>
-							    <div class="column column-6">
+							    <div class="col-md-6">
 							        <div class="row">
-							            <div class="column column-4">Last Name</div>
-							            <div class="column column-8">
-							            	<input type="text" name="lastName" value="${param.lastName}">
+							            <div class="col-md-4">Last Name</div>
+							            <div class="col-md-8">
+							            	<input type="text" name="lastName" value="${param.lastName}" class="form-control">
 							            </div>
-							        </div>
+							        </div><br>
 							        <div class="row">
-							            <div class="column column-4">Role</div>
-							            <div class="column column-8">
-							            	<select name="roles">
+							            <div class="col-md-4">Role</div>
+							            <div class="col-md-8">
+							            	<select name="roles" class="form-control">
 												<option value="">Select role...</option>
 												<c:forEach var="role" items="${roles}">
 													<option ${role.role == param.roles ? 'selected="selected"' : ''} 
@@ -55,25 +63,27 @@
 							            </div>
 							        </div>
 							    </div>
-							</div>
-							<div style="padding:1%" align="right">
-								<button type="submit" name="search" value="search">search</button>
+							</div><br>
+							<div align="right">
+								<button type="submit" name="search" value="search" class="btn btn-default">Search</button>
 							</div>
 						</form>
 					</fieldset>
 				</div>
 				<div style="padding:1%">
-					<fieldset style="padding:1%">
-						<legend>Person Table</legend>
+					<fieldset style="padding:1%" class="default-border">
+						<legend class="default-border">Person Table</legend>
 						<form id="personForm">
-							<div align="right" style="padding:1%">
-								<input type="button" value="View" name="view" id="btnView">
-								<input type="button" value="Add" name="add" id="btnAdd">
-								<input type="button" value="Update" name="update" id="btnUpdate">
-								<input type="button" value="Delete" name="delete" id="btnDelete">
-								<input type="button" value="Audit" name="audit" id="btnAudit">
-							</div>
-							<table class="table" border="1">
+							<div align="right">
+								<input type="button" value="View" name="view" id="btnView" class="btn btn-default">
+								<input type="button" value="Add" name="add" id="btnAdd" class="btn btn-default">
+								<input type="button" value="Update" name="update" id="btnUpdate" class="btn btn-default">
+								<c:if test="${sessionScope.authorities.get(0).toString().equals('ADMIN')}">
+									<input type="button" value="Delete" name="delete" id="btnDelete" class="btn btn-default">
+									<input type="button" value="Audit" name="audit" id="btnAudit" class="btn btn-default">
+								</c:if>
+							</div><br>
+							<table class="table table-striped table-bordered table-hover">
 								<thead>
 								<tr>
 									<th></th>

@@ -5,15 +5,14 @@ import java.util.Set;
 import java.util.Collection;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.Table;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.GrantedAuthority;
@@ -32,11 +31,9 @@ public class User extends BaseEntity implements UserDetails {
 	@Column(name = "enabled")
 	private boolean enabled = false;
 
-	@ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "USERS_USER_ROLES", 
-             joinColumns = { @JoinColumn(name = "user_id", updatable = false) }, 
-             inverseJoinColumns = { @JoinColumn(name = "user_role_id", updatable = false) })
-	private Set<UserRole> userRole = new HashSet<UserRole>(0);
+	@Enumerated(EnumType.STRING)
+	@Column(name = "role")
+	private UserRole userRole;
 
 	@Column(name = "name")
 	private String name;
@@ -54,6 +51,10 @@ public class User extends BaseEntity implements UserDetails {
 	@Column(name = "credentials_non_expired")
 	private boolean credentialsNonExpired = true;
 
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "date_created")
+	private Date dateCreated = new Date();
+
 	public User() {
 	}
 
@@ -63,7 +64,7 @@ public class User extends BaseEntity implements UserDetails {
 		this.name = name;
 	}
 
-	public User(String username, String password, String name, Set<UserRole> userRole) {
+	public User(String username, String password, String name, UserRole userRole) {
 		this.username = username;
 		this.password = password;
 		this.name = name;
@@ -94,11 +95,11 @@ public class User extends BaseEntity implements UserDetails {
 		this.enabled = enabled;
 	}
 
-	public Set<UserRole> getUserRole() {
+	public UserRole getUserRole() {
 		return this.userRole;
 	}
 
-	public void setUserRole(Set<UserRole> userRole) {
+	public void setUserRole(UserRole userRole) {
 		this.userRole = userRole;
 	}
 
@@ -121,25 +122,31 @@ public class User extends BaseEntity implements UserDetails {
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		List<SimpleGrantedAuthority> authorities = new ArrayList<>();
-		for(UserRole role : userRole){
-			authorities.add(new SimpleGrantedAuthority(role.getRole().name()));
-		}
+		authorities.add(new SimpleGrantedAuthority(this.userRole.toString()));
 		return authorities;
 	}
 
 	@Override
 	public boolean isAccountNonExpired() {
-		return accountNonExpired;
+		return this.accountNonExpired;
 	}
 
 	@Override
 	public boolean isAccountNonLocked() {
-		return accountNonLocked;
+		return this.accountNonLocked;
 	}
 
 	@Override
 	public boolean isCredentialsNonExpired() {
-		return credentialsNonExpired;
+		return this.credentialsNonExpired;
+	}
+
+	public Date getDateCreated(){
+		return this.dateCreated;
+	}
+
+	public void setDateCreated(Date dateCreated){
+		this.dateCreated = dateCreated;
 	}
 
 }

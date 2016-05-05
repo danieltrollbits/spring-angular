@@ -60,14 +60,8 @@ public class PersonController {
     }
 
     @RequestMapping(value = "/login_as_admin", method = {RequestMethod.GET,RequestMethod.POST})
-    public String login(@RequestParam String username, @RequestParam String password){
-    	UserDto userDto = userService.getUsernameAndPassword(username, password);
-    	if(userDto.getUserRoleDto().contains("ADMIN")){
-    		return "redirect:/login?admin";
-    	}
-    	else{
-    		return "login";
-    	}
+    public String loginAsAdmin(){
+    	return "redirect:/login?error";
     }
 
     @RequestMapping(value = "/logout", method = RequestMethod.GET)
@@ -90,12 +84,20 @@ public class PersonController {
 		return "redirect:/login?saved";
 	}
 
+	@RequestMapping(value = "/pending_account", method = RequestMethod.GET)
+	public ModelAndView pendingAccount(UserDto userDto){
+		ModelAndView model = new ModelAndView("pending_account");
+		model.addObject("pendingAccount",userService.getPendingUsers());
+		return model;
+	}	
+
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public ModelAndView list(){
 		List<PersonDto> personDtos = personService.getAllPersons();
 		ModelAndView model = new ModelAndView("index");
 		model.addObject("persons",personDtos);
 		model.addObject("roles",personService.getRoles());
+		model.addObject("pendingAccount",userService.getPendingUsers().size());
 		return model;
 	}
 

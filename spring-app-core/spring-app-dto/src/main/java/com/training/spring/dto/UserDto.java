@@ -2,7 +2,8 @@ package com.training.spring.dto;
 
 import java.util.HashSet;
 import java.util.Set;
-import com.training.spring.dto.UserRoleDto;
+import java.util.Date;
+import com.training.spring.model.UserRole;
 
 public class UserDto extends BaseDto {
 
@@ -12,9 +13,11 @@ public class UserDto extends BaseDto {
 
 	private boolean enabled;
 
-	private Set<UserRoleDto> userRoleDto = new HashSet<UserRoleDto>(0);
+	private UserRole userRoleDto;
 
 	private String name;
+
+	private Date dateCreated;
 
 	public UserDto() {
 	}
@@ -25,7 +28,7 @@ public class UserDto extends BaseDto {
 		this.name = name;
 	}
 
-	public UserDto(String username, String password, String name, Set<UserRoleDto> userRoleDto) {
+	public UserDto(String username, String password, String name, UserRole userRoleDto) {
 		this.username = username;
 		this.password = password;
 		this.name = name;
@@ -56,11 +59,11 @@ public class UserDto extends BaseDto {
 		this.enabled = enabled;
 	}
 
-	public Set<UserRoleDto> getUserRoleDto() {
+	public UserRole getUserRoleDto() {
 		return this.userRoleDto;
 	}
 
-	public void setUserRoleDto(Set<UserRoleDto> userRoleDto) {
+	public void setUserRoleDto(UserRole userRoleDto) {
 		this.userRoleDto = userRoleDto;
 	}
 
@@ -70,6 +73,14 @@ public class UserDto extends BaseDto {
 
 	public void setName(String name){
 		this.name = name;
+	}
+
+	public Date getDateCreated(){
+		return this.dateCreated;
+	}
+
+	public void setName(Date dateCreated){
+		this.dateCreated = dateCreated;
 	}
 
 }

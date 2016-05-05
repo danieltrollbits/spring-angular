@@ -1,6 +1,7 @@
 package com.training.spring.dao;
 
 import com.training.spring.model.User;
+import java.util.List;
 
 public interface UserDao {
 
@@ -8,5 +9,5 @@ public interface UserDao {
 
 	void save(User user);
 
-	User getUsernameAndPassword(String username, String password);
+	List<User> getPendingUsers();
 }

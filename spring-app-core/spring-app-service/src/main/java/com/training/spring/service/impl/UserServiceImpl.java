@@ -15,8 +15,6 @@ import com.training.spring.model.UserRole;
 import com.training.spring.dto.UserDto;
 import com.training.spring.model.User;
 import com.training.spring.model.UserRole;
-import com.training.spring.dto.UserRoleDto;
-import com.training.spring.model.RoleUser;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -34,24 +32,32 @@ public class UserServiceImpl implements UserService {
 			return null;
 		}
 		else{ 
-			userDao.save(new User(userDto.getUsername(),passwordEncoder.encode(userDto.getPassword()),userDto.getName()));
+			userDao.save(new User(userDto.getUsername(),passwordEncoder.encode(userDto.getPassword()),userDto.getName(),UserRole.USER));
 			return userDto;	
 		}
 	}
 
 	@Transactional(readOnly = true)
 	@Override
-	public UserDto getUsernameAndPassword(String username, String password){
-		User user = userDao.getUsernameAndPassword(username, password);
+	public List<UserDto> getPendingUsers(){
+		List<User> users = userDao.getPendingUsers();
+		return toDtos(users);
+	}
+
+	public List<UserDto> toDtos(List<User> users){
+		List<UserDto> userDtos = new ArrayList<>(); 
+		for (User user : users){
+			userDtos.add(toDto(user));
+		}
+		return userDtos;
+	}
+
+	public UserDto toDto(User user){
 		UserDto userDto = new UserDto();
 		userDto.setId(user.getId());
 		userDto.setUsername(user.getUsername());
 		userDto.setPassword(user.getPassword());
-		Set<UserRoleDto> userRoleDto = new HashSet<>();
-		for (UserRole userRole : user.getUserRole()){
-			userRoleDto.add(new UserRoleDto(userRole.getRole()));
-		}
-		userDto.setUserRoleDto(userRoleDto);
+		userDto.setUserRoleDto(user.getUserRole());
 		return userDto;
 	}
 
