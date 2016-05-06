@@ -37,6 +37,10 @@
       <groupId>com.training.spring</groupId>
       <artifactId>spring-app-dto</artifactId>
     </dependency>
+    <dependency>
+      <groupId>com.training.spring</groupId>
+      <artifactId>spring-app-infra</artifactId>
+    </dependency>
 
     <dependency>
       <groupId>org.apache.commons</groupId>

@@ -29,6 +29,18 @@
     </div><br>
     <jsp:include page="create_account.jsp"/>
 </div>
+<script src="<c:url value="/resources/js/jquery-2.2.3.min.js"/>"></script>
+<script>
+    function confirmPassword(){
+        if($("#password").val() == $("#confirmPassword").val()){
+            return true;
+        }
+        else{
+            alert("Password does not match.");
+            return false;
+        }
+    }
+</script>    
 
 </body>
 </html>

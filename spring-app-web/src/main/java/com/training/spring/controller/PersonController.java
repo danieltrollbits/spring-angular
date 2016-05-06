@@ -24,6 +24,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 import java.util.Date;
 import org.springframework.validation.BindingResult;
 import javax.validation.Valid;
@@ -74,9 +76,15 @@ public class PersonController {
 	}
 
 	@RequestMapping(value = "/create_account", method = RequestMethod.POST)
-	public String createAccount(UserDto userDto){
-		userService.save(userDto);
-		return "redirect:/login?saved";
+	public String createAccount(UserDto userDto, final RedirectAttributes redirectAttributes){
+		if(userService.isExisting(userDto.getUsername())){
+			redirectAttributes.addFlashAttribute("flashError","Username already exist.");	
+		}
+		else{
+			userService.save(userDto);
+			redirectAttributes.addFlashAttribute("flashMessage","Account added successfully. Please wait for activation.");	
+		}
+		return "redirect:/login";
 	}
 
 	@RequestMapping(value = "/pending_account", method = RequestMethod.GET)
@@ -179,7 +187,7 @@ public class PersonController {
 	}
 
 	@RequestMapping(value="/save", method = RequestMethod.POST)
-	public ModelAndView search(@Valid PersonDto personDto, BindingResult result){
+	public ModelAndView save(@Valid PersonDto personDto, BindingResult result){
 		List<ContactDto> contactDtos = new ArrayList<>();
 		for (ContactDto c : personDto.getContactDtos()){
 			if (c.getType() != null && c.getValue() != ""){

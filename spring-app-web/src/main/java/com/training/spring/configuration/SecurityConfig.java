@@ -32,7 +32,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 	    http.authorizeRequests()
         .antMatchers("/resources/**","/create_account","/denied").permitAll()
-        .antMatchers("/delete","/audit").hasRole("ADMIN")
+        .antMatchers("/delete","/audit","/pending_account","/accept_account").hasAuthority("ADMIN")
         .anyRequest().authenticated()
         .and()
         	.formLogin()

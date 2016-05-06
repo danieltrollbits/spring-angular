@@ -9,4 +9,6 @@ public interface UserService {
 	List<UserDto> getPendingUsers();
 
 	void acceptAccount(int userId);
+
+	boolean isExisting(String username);
 }

@@ -22,6 +22,11 @@
     	<appender-ref ref="CONSOLE"/>
   	</logger>
 
+  	<logger level="DEBUG" additivity="false" name="com.training.spring">
+    	<appender-ref ref="CONSOLE"/>
+		<appender-ref ref="STDOUT" />
+  	</logger>
+
 	<root level="debug">
 		<appender-ref ref="STDOUT" />
 	</root>

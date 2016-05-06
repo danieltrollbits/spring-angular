@@ -58,6 +58,8 @@ public class ApplicationContextConfig {
 	    LocalSessionFactoryBuilder sessionBuilder = new LocalSessionFactoryBuilder(dataSource);
 	    sessionBuilder.scanPackages("com.training.spring.model");
 	    sessionBuilder.setProperty("hibernate.show_sql", "true");
+	    // sessionBuilder.setProperty("hibernate.hbm2dll.auto","create");
+	    // sessionBuilder.setProperty("hibernate.hbm2ddl.import_files","admin.sql");
 	    sessionBuilder.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQLDialect");
 	    return sessionBuilder.buildSessionFactory();
 	}

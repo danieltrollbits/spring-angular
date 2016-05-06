@@ -10,16 +10,17 @@
 	<body style="padding:2% 10% 10% 10%">
 		<div class="container">
 			<div class="row">
-				<div class="col-md-6">
-					<span style="color:blue">${param.message}</span>
+				<div class="col-md-12 text-right">
+					<span>Welcome ${sessionScope.username} - ${sessionScope.authorities.get(0)} | </span>
+					<c:if test="${sessionScope.authorities.get(0).toString().equals('ADMIN')}">
+						<a href="/pending_account">Pending account <span class="badge">${pendingAccount}</span></a> |
+					</c:if>
+					<a href="<c:url value='/logout' />" class="btn btn-link">Logout</a>
 				</div>
 			</div>
 			<div class="row">
-				<div class="col-md-12 text-right">
-					<c:if test="${sessionScope.authorities.get(0).toString().equals('ADMIN')}">
-						<a href="/pending_account">Pending account <span class="badge">${pendingAccount}</span></a>
-					</c:if>
-					<a href="<c:url value='/logout' />" class="btn btn-link">Logout</a>
+				<div class="col-md-6">
+					<div class="text-success">${param.message}</div>
 				</div>
 			</div>
 			<fieldset class="default-border">
@@ -121,6 +122,7 @@
 									</c:if>
 								</tbody>
 							</table>
+							<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 						</form>
 					</fieldset>	
 				</div>

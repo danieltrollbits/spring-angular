@@ -69,4 +69,14 @@ public class UserServiceImpl implements UserService {
 		return userDto;
 	}
 
+	@Transactional(readOnly = true)
+	@Override
+	public boolean isExisting(String username){
+		User user = userDao.findByUserName(username);
+		if(user != null){
+			return true;
+		}
+		return false;
+	}
+
 }

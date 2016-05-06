@@ -1,7 +1,9 @@
 <div class="row">
     <div class="col-sm-6 col-md-6 col-md-offset-3">
+            <div class="text-success h4">${flashMessage}</div>
+            <div class="text-danger h4">${flashError}</div>
         <h1>Create Account</h1>
-        <form action="/create_account" method="POST" onsubmit="return false">
+        <form action="/create_account" method="POST" onsubmit="return window.confirmPassword();">
             <div class="row">
                 <div class="col-md-4">Username<span class="required">*</span></div>
                 <div class="col-md-8">
@@ -31,17 +33,3 @@
         </form>
     </div>
 </div>
-
-<script src="<c:url value="/resources/js/jquery-2.2.3.min.js"/>"></script> 
-<script>
-    function confirmPassword(){
-        alert("asdsdad");
-        if($("#password").val() == $("#confirmPassword").val()){
-            return true;
-        }
-        else{
-            alert("Password does not match.");
-            return false;
-        }
-    }
-</script>
