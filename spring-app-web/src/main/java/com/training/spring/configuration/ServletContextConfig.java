@@ -15,15 +15,15 @@ public class ServletContextConfig extends WebMvcConfigurerAdapter{
     
 	@Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/resources/**").addResourceLocations("/resources/");
+        registry.addResourceHandler("/**").addResourceLocations("/WEB-INF/static/html/");
     }
 
-    @Bean(name = "viewResolver")
+    /*@Bean(name = "viewResolver")
 	public InternalResourceViewResolver getViewResolver() {
 	    InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
-	    viewResolver.setPrefix("/WEB-INF/views/");
-	    viewResolver.setSuffix(".jsp");
+	    viewResolver.setPrefix("/WEB-INF/static/html/");
+	    viewResolver.setSuffix(".html");
 	    return viewResolver;
-	}
+	}*/
  
 }
